@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import axios from 'axios'
 import {ITask} from "../models/ITask";
+import {GetTasksServer} from "../api/server/Task/GetTasksServer";
 
 export function useTasks(nameProject? : string){
     const [tasks, setTasks] = useState<ITask[]>([])
     async function fetchProjects(){
-        const responce = await axios.get(`http://localhost:5031/api/task/getall/${nameProject}`)
+        const responce = await GetTasksServer(nameProject)
         setTasks(responce.data)
     }
 

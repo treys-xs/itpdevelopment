@@ -7,7 +7,6 @@ namespace Server.Application.Interfaces
     {
         DbSet<Domain.Project> Projects { get; set; }
         DbSet<Domain.Task> Tasks { get; set; }
-        DbSet<TaskComment> TaskComments { get; set; }
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        DbSet<Domain.TaskComment> TaskComments { get; set; }
     }
 }

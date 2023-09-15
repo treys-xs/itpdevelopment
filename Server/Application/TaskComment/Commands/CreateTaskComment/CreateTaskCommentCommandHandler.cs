@@ -2,18 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Application.Interfaces;
 
-namespace Server.Application.Project.TaskComment.Commands.CreateTaskComment
+namespace Server.Application.TaskComment.Commands.CreateTaskComment
 {
     public class CreateTaskCommentCommandHandler : IRequestHandler<CreateTaskCommentCommand, Guid>
     {
-        private readonly IProjectDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public CreateTaskCommentCommandHandler(IProjectDbContext dbContext) =>
-            _dbContext = dbContext;
+        public CreateTaskCommentCommandHandler(IRepository repository) =>
+            _repository = repository;
 
         public async Task<Guid> Handle(CreateTaskCommentCommand request, CancellationToken cancellationToken)
         {
-            var task = await _dbContext.Tasks.FirstOrDefaultAsync(task => task.Id == request.TaskId);
+            var task = await _repository.FirstOrDefaultAsync<Domain.Task>(task => task.Id == request.TaskId);
 
             if (task == null)
             {
@@ -30,8 +30,7 @@ namespace Server.Application.Project.TaskComment.Commands.CreateTaskComment
 
             };
 
-            await _dbContext.TaskComments.AddAsync(taskComment, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _repository.CreateAsync(taskComment);
 
             return taskComment.Id;
         }

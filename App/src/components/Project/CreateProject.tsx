@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios'
+import {СreateProjectServer} from "../../api/server/Project/CreateProjectServer";
 
 interface CreateProjectProps{
     onCreate: () => void
@@ -10,7 +11,7 @@ export function CreateProject({ onCreate } : CreateProjectProps){
 
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        await axios.post("http://localhost:5031/api/project/create", { name: value })
+        СreateProjectServer(value)
         onCreate()
     }
 

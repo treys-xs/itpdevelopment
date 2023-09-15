@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios'
+import {CreateTaskCommentsServer} from "../../api/server/TaskComments/CreateTaskCommentsServer";
 
 interface CreateTaskCommentsProps{
     onCreate: () => void,
@@ -21,7 +22,7 @@ export function CreateTaskComments({ onCreate, taskId } : CreateTaskCommentsProp
 
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        await axios.post("http://localhost:5031/api/taskcomment/create", {
+        CreateTaskCommentsServer({
             taskId: taskId,
             type: contact.commentType,
             content: contact.content

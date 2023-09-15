@@ -11,12 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
                 .AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
-builder.Services.AddAutoMapper(config =>
-{
-    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-    config.AddProfile(new AssemblyMappingProfile(typeof(IProjectDbContext).Assembly));
-});
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

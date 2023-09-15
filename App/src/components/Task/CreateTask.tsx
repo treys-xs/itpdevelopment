@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios'
+import {CreateTaskServer} from "../../api/server/Task/CreateTaskServer";
 
 interface CreateTaskProps{
     onCreate: () => void
@@ -24,7 +25,7 @@ export function CreateTask({ onCreate, projectId } : CreateTaskProps){
 
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        await axios.post("http://localhost:5031/api/task/create", {
+        CreateTaskServer({
             projectId: projectId,
             description: contact.description,
             name: contact.name,

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Server.Application.Interfaces;
 
@@ -6,14 +7,15 @@ namespace Server.Application.Task.Commands.CreateTask
 {
     public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Guid>
     {
-        private readonly IProjectDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public CreateTaskCommandHandler(IProjectDbContext dbContext) =>
-            _dbContext = dbContext;
+        public CreateTaskCommandHandler(IRepository repository) =>
+            _repository = repository;
+
 
         public async Task<Guid> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
         {
-            var project = await _dbContext.Projects.FirstOrDefaultAsync(project => project.Id == request.ProjectId);
+            var project = await _repository.FirstOrDefaultAsync<Domain.Project>(project => project.Id == request.ProjectId);
 
             if (project == null)
             {
@@ -34,8 +36,7 @@ namespace Server.Application.Task.Commands.CreateTask
                 EndDate = DateTime.Parse(request.EndDate)
             };
 
-            await _dbContext.Tasks.AddAsync(task, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _repository.CreateAsync<Domain.Task>(task);
 
             return task.Id;
         }

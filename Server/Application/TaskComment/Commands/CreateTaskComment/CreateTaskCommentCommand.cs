@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Server.Application.Project.TaskComment.Commands.CreateTaskComment
+namespace Server.Application.TaskComment.Commands.CreateTaskComment
 {
     public class CreateTaskCommentCommand : IRequest<Guid>
     {

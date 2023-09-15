@@ -1,27 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Server.Application.Project.TaskComment.Commands.CreateTaskComment;
-using Server.Application.Project.TaskComment.Queries.GetTaskCommentsList;
+using Server.Application.TaskComment.Commands.CreateTaskComment;
+using Server.Application.TaskComment.Queries.GetTaskCommentsList;
 
 namespace Server.Controllers
 {
     public class TaskCommentController : BaseController
     {
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateTaskCommentCommand command)
+        [HttpGet]
+        public async Task<ActionResult> Get(Guid id)
         {
-            var id = await Mediator.Send(command, CancellationToken.None);
+            var vm = await GetData<GetTaskCommentsListQuery, TaskCommentsListVm>(id);
+            return Ok(vm.TaskComments);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] CreateTaskCommentCommand command)
+        {
+            var id = await CreateData<CreateTaskCommentCommand, Guid>(command);
             return Ok(id);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TaskCommentsListVm>> Get(Guid id)
-        {
-            var query = new GetTaskCommentsListQuery()
-            {
-                TaskId = id
-            };
-            var vm = await Mediator.Send(query, CancellationToken.None);
-            return Ok(vm.TaskComments);
-        }
     }
 }

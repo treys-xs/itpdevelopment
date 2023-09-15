@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Project.TaskComment.Queries.GetTaskCommentsList
+﻿namespace Server.Application.TaskComment.Queries.GetTaskCommentsList
 {
     public class TaskCommentsListVm
     {

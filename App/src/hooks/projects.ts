@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import {IProject} from "../models/IProject";
 import axios from 'axios'
+import {GetAllProjectsServer} from "../api/server/Project/GetAllProjectsServer";
 export function useProjects(){
     const [projects, setProjects] = useState<IProject[]>([])
     async function fetchProjects(){
-        const responce = await axios.get("http://localhost:5031/api/project/getall")
-        setProjects(responce.data)
+        const response = await GetAllProjectsServer()
+        setProjects(response.data)
     }
 
     useEffect(() => {

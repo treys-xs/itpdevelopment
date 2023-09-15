@@ -13,8 +13,7 @@ namespace Server.Persistence
                 options.UseSqlite(connectionString);
             });
 
-            services.AddScoped<IProjectDbContext>(provider =>
-                provider.GetService<ProjectDbContext>());
+            services.AddScoped<IRepository, Repository<ProjectDbContext>>();
 
             return services;
         }

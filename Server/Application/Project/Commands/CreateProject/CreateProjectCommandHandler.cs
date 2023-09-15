@@ -7,14 +7,14 @@ namespace Server.Application.Project.Commands.CreateProject
 {
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, Guid>
     {
-        private readonly IProjectDbContext _dbContext;
+        private readonly IRepository _repository;
 
-        public CreateProjectCommandHandler(IProjectDbContext dbContext) =>
-            _dbContext = dbContext;
+        public CreateProjectCommandHandler(IRepository repository) =>
+            _repository = repository;
 
         public async Task<Guid> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
-            var searchProject = await _dbContext.Projects.FirstOrDefaultAsync(project => project.Name == request.Name);
+            var searchProject = await _repository.FirstOrDefaultAsync<Domain.Project>(project => project.Name == request.Name);
 
             if (searchProject != null)
             {
@@ -30,8 +30,7 @@ namespace Server.Application.Project.Commands.CreateProject
                 UpdateDate = DateTime.Now.Date
             };
 
-            await _dbContext.Projects.AddAsync(project, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _repository.CreateAsync<Domain.Project>(project);
 
             return project.Id;
         }
